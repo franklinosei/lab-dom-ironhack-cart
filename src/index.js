@@ -30,12 +30,13 @@ function calculateAll() {
   totalElm.innerText = total;
 }
 
+
 // ITERATION 4
 function removeProduct(event) {
   const target = event.currentTarget;
   console.log("The target in remove is:", target);
   //... your code goes here
-  target.parentNode.removeChild();
+  target.parentNode.remove();
 }
 
 // ITERATION 5
@@ -43,18 +44,81 @@ function removeProduct(event) {
 function createProduct(event) {
   //... your code goes here\
 
-  
+  const newProductValues = document
+    .getElementsByClassName("create-product")
+    .item(0);
+  const nameElm = newProductValues.querySelector(".name input");
+  const priceElm = newProductValues.querySelector(".price input");
+
+  // create new product
+  const newProduct = document.createElement("tr");
+  // add classname to tr
+  newProduct.className = "product";
+
+  // create td elements and add to newProduct
+  const nameTrElm = document.createElement("td");
+  nameTrElm.className = "name";
+  nameTrElm.appendChild(document.createElement("span"));
+  nameTrElm.querySelector("span").innerText = nameElm.value;
+
+  // price tr
+  const priceTrElm = document.createElement("td");
+  priceTrElm.className = "price";
+  priceTrElm.appendChild(document.createTextNode("$"));
+  priceTrElm.appendChild(document.createElement("span"));
+  priceTrElm.querySelector("span").innerText = priceElm.value;
+
+  // quantity tr
+  const quaintityTrElm = document.createElement("td");
+  quaintityTrElm.className = "quantity";
+
+  quaintityTrElm.appendChild(document.createElement("input"));
+  const inputElm = quaintityTrElm.querySelector("input");
+  inputElm.placeholder = "Quantity";
+  inputElm.value = 0;
+  inputElm.min = 0;
+  inputElm.type = "number";
+
+  // subtotal tr
+  const subtotalTrElm = document.createElement("td");
+  subtotalTrElm.className = "subtotal";
+  subtotalTrElm.appendChild(document.createTextNode("$"));
+  subtotalTrElm.appendChild(document.createElement("span"));
+  subtotalTrElm.querySelector("span").innerText = 0;
+
+  // remove button
+  const removeBtnElm = document.createElement("td");
+  removeBtnElm.className = "action";
+
+  removeBtnElm.appendChild(document.createElement("button"));
+  const removeButtonEle = removeBtnElm.querySelector("button");
+  removeButtonEle.className = "btn btn-remove";
+  removeButtonEle.innerText = "Remove";
+
+  // add listener
+  removeBtnElm.addEventListener("click", removeProduct)
+
+  // append children to newProduct
+  newProduct.appendChild(nameTrElm);
+  newProduct.appendChild(priceTrElm);
+  newProduct.appendChild(quaintityTrElm);
+  newProduct.appendChild(subtotalTrElm);
+  newProduct.appendChild(removeBtnElm);
+
+  // get table data and append
+  const tableData = document.getElementsByTagName("tbody").item(0);
+  tableData.appendChild(newProduct);
+
+  nameElm.value = "";
+  priceElm.value = "";
 }
 
-
-
 window.addEventListener("load", () => {
-
   const calculatePricesBtn = document.getElementById("calculate");
   calculatePricesBtn.addEventListener("click", calculateAll);
 
   //... your code goes here
-// remove
+  // remove
   const removeButtons = document.getElementsByClassName("action");
   const removeButtonsCopy = [...removeButtons];
 
@@ -63,7 +127,7 @@ window.addEventListener("load", () => {
   );
 
   // add
-  
+
   const createButtons = document.getElementById("create");
-  createButtons.addEventListener("click", createProduct)
+  createButtons.addEventListener("click", createProduct);
 });
